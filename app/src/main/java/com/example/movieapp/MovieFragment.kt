@@ -36,6 +36,8 @@ class MovieFragment : Fragment(), MovieItemListener {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_movie_list, container, false)
 
+        MockupMovies.populateCards()
+
         // Set the adapter
         if (view is RecyclerView) {
             with(view) {
@@ -43,7 +45,7 @@ class MovieFragment : Fragment(), MovieItemListener {
                     columnCount <= 1 -> LinearLayoutManager(context)
                     else -> GridLayoutManager(context, columnCount)
                 }
-                adapter = MyItemRecyclerViewAdapter(PlaceholderContent.ITEMS, this@MovieFragment)
+                adapter = MyItemRecyclerViewAdapter(MockupMovies.cardMoviesList, this@MovieFragment)
             }
         }
         return view

@@ -4,6 +4,7 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 
 import com.example.movieapp.placeholder.PlaceholderContent.PlaceholderItem
@@ -18,7 +19,7 @@ interface MovieItemListener{
     fun onItemSelected(position: Int)
 }
 class MyItemRecyclerViewAdapter(
-    private val values: List<PlaceholderItem>,
+    private val values: List<BodyCardMovies>,
     private val listener: MovieItemListener
 ) : RecyclerView.Adapter<MyItemRecyclerViewAdapter.ViewHolder>() {
 
@@ -36,8 +37,9 @@ class MyItemRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = values[position]
-        holder.idView.text = item.id
-        holder.contentView.text = item.content
+        holder.idView.text = item.movieName
+        holder.contentView.text = item.synopsis
+        holder.imgMovie.setImageResource(item.imgMovie)
         holder.view.setOnClickListener {
             listener.onItemSelected(position)
         }
@@ -50,8 +52,9 @@ class MyItemRecyclerViewAdapter(
     inner class ViewHolder(binding: FragmentMovieItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         val view: View = binding.root
-        val idView: TextView = binding.itemNumber
+        val idView: TextView = binding.movieName
         val contentView: TextView = binding.content
+        val imgMovie: ImageView = binding.imageView
 
         override fun toString(): String {
             return super.toString() + " '" + contentView.text + "'"
