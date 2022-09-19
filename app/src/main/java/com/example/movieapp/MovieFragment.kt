@@ -8,13 +8,14 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
 import com.example.movieapp.placeholder.PlaceholderContent
 
 /**
  * A fragment representing a list of Items.
  */
-class MovieFragment : Fragment() {
+class MovieFragment : Fragment(), MovieItemListener {
 
     private var columnCount = 1
     private val viewModel by navGraphViewModels<MovieViewModel>(R.id.movie_graph){
@@ -42,10 +43,14 @@ class MovieFragment : Fragment() {
                     columnCount <= 1 -> LinearLayoutManager(context)
                     else -> GridLayoutManager(context, columnCount)
                 }
-                adapter = MyItemRecyclerViewAdapter(PlaceholderContent.ITEMS)
+                adapter = MyItemRecyclerViewAdapter(PlaceholderContent.ITEMS, this@MovieFragment)
             }
         }
         return view
+    }
+
+    override fun onItemSelected(position: Int) {
+        findNavController().navigate(R.id.movieDetailsFragment)
     }
 
     companion object {
@@ -62,4 +67,6 @@ class MovieFragment : Fragment() {
                 }
             }
     }
+
+
 }

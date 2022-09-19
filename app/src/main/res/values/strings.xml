@@ -3,4 +3,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="share_button_title">Compartilhar</string>
+    <string name="text_movie_title">Tudo em todo lugar ao mesmo tempo</string>
+    <string name="label_content_text">ContentText</string>
+    <string name="text_movies_synopsis">Sinopse: Uma ruptura interdimensional bagunça a realidade e uma inesperada heroína precisa usar seus novos poderes para lutar contra os perigos bizarros do multiverso.</string>
 </resources>

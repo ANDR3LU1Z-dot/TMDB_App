@@ -25,7 +25,7 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/movies" />
+                app:srcCompat="@drawable/tudo_em_todo_lugar" />
 
             <TextView
                 android:id="@+id/item_number"
@@ -45,6 +45,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/text_margin"
+                android:text="@string/text_movie_title"
+                android:textStyle="bold"
                 android:textAppearance="?attr/textAppearanceListItem"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.498"
