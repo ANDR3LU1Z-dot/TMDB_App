@@ -10,14 +10,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
+import com.example.movieapp.databinding.FragmentMovieListBinding
 import com.example.movieapp.placeholder.PlaceholderContent
+import org.w3c.dom.Text
 
 /**
  * A fragment representing a list of Items.
  */
 class MovieFragment : Fragment(), MovieItemListener {
 
+
     private var columnCount = 1
+
     private val viewModel by navGraphViewModels<MovieViewModel>(R.id.movie_graph){
         defaultViewModelProviderFactory
     }
@@ -38,6 +42,9 @@ class MovieFragment : Fragment(), MovieItemListener {
 
         MockupMovies.populateCards()
 
+
+
+
         // Set the adapter
         if (view is RecyclerView) {
             with(view) {
@@ -53,6 +60,7 @@ class MovieFragment : Fragment(), MovieItemListener {
 
     override fun onItemSelected(position: Int) {
         findNavController().navigate(R.id.movieDetailsFragment)
+
     }
 
     companion object {
