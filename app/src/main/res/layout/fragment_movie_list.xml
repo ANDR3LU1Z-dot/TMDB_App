@@ -10,3 +10,4 @@
     app:layoutManager="LinearLayoutManager"
     tools:context=".MovieFragment"
     tools:listitem="@layout/fragment_movie_item" />
+

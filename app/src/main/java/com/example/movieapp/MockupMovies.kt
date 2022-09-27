@@ -3,8 +3,10 @@ package com.example.movieapp
 object MockupMovies {
 
     val cardMoviesList = mutableListOf<BodyCardMovies>()
-
     fun populateCards(){
+
+        cardMoviesList.clear()
+
         val movie1 = BodyCardMovies(
             "Tudo em Todo Lugar ao mesmo Tempo",
             "Sinopse: Uma ruptura interdimensional bagunça a realidade e uma inesperada heroína precisa usar seus novos poderes para lutar contra os perigos bizarros do multiverso.",
