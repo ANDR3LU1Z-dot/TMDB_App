@@ -1,22 +1,16 @@
 package com.example.movieapp
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
-import com.example.movieapp.databinding.FragmentMovieListBinding
-import com.example.movieapp.placeholder.PlaceholderContent
-import org.w3c.dom.Text
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
-/**
- * A fragment representing a list of Items.
- */
 class MovieFragment : Fragment(), MovieItemListener {
 
 
@@ -29,9 +23,7 @@ class MovieFragment : Fragment(), MovieItemListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        arguments?.let {
-            columnCount = it.getInt(ARG_COLUMN_COUNT)
-        }
+
     }
 
     override fun onCreateView(
@@ -62,21 +54,5 @@ class MovieFragment : Fragment(), MovieItemListener {
         findNavController().navigate(R.id.movieDetailsFragment)
 
     }
-
-    companion object {
-
-        // TODO: Customize parameter argument names
-        const val ARG_COLUMN_COUNT = "column-count"
-
-        // TODO: Customize parameter initialization
-        @JvmStatic
-        fun newInstance(columnCount: Int) =
-            MovieFragment().apply {
-                arguments = Bundle().apply {
-                    putInt(ARG_COLUMN_COUNT, columnCount)
-                }
-            }
-    }
-
 
 }

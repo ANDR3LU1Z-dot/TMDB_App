@@ -9,5 +9,5 @@
     android:background="#A8A5A5"
     app:layoutManager="LinearLayoutManager"
     tools:context=".MovieFragment"
-    tools:listitem="@layout/fragment_movie_item" />
+    tools:listitem="@layout/fragment_item" />
 

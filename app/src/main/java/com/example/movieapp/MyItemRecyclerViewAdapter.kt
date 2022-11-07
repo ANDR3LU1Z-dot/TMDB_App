@@ -1,23 +1,15 @@
 package com.example.movieapp
 
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
-
-import com.example.movieapp.placeholder.PlaceholderContent.PlaceholderItem
-import com.example.movieapp.databinding.FragmentMovieItemBinding
-
-/**
- * [RecyclerView.Adapter] that can display a [PlaceholderItem].
- * TODO: Replace the implementation with code for your data type.
- */
+import androidx.recyclerview.widget.RecyclerView
+import com.example.movieapp.databinding.FragmentItemBinding
 
 interface MovieItemListener{
     fun onItemSelected(position: Int)
 }
+
 class MyItemRecyclerViewAdapter(
     private val values: List<BodyCardMovies>,
     private val listener: MovieItemListener
@@ -26,7 +18,7 @@ class MyItemRecyclerViewAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
         return ViewHolder(
-            FragmentMovieItemBinding.inflate(
+            FragmentItemBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
@@ -37,9 +29,7 @@ class MyItemRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = values[position]
-        holder.idView.text = item.movieName
-        holder.contentView.text = item.synopsis
-        holder.imgMovie.setImageResource(item.imgMovie)
+        holder.bindItem(item)
         holder.view.setOnClickListener {
             listener.onItemSelected(position)
         }
@@ -49,16 +39,16 @@ class MyItemRecyclerViewAdapter(
 
     override fun getItemCount(): Int = values.size
 
-    inner class ViewHolder(binding: FragmentMovieItemBinding) :
+    inner class ViewHolder(private val binding: FragmentItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        val view: View = binding.root
-        val idView: TextView = binding.movieName
-        val contentView: TextView = binding.content
-        val imgMovie: ImageView = binding.imageView
 
-        override fun toString(): String {
-            return super.toString() + " '" + contentView.text + "'"
+        val view: View = binding.root
+
+        fun bindItem(item: BodyCardMovies){
+            binding.movieItem = item
+            binding.executePendingBindings()
         }
+
     }
 
 }
