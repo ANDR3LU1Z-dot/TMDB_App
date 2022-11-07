@@ -2,7 +2,7 @@ package com.example.movieapp
 
 object MockupMovies {
 
-    val cardMoviesList = mutableListOf<BodyCardMovies>()
+    val cardMoviesList: MutableList<BodyCardMovies> = arrayListOf()
     fun populateCards(){
 
         cardMoviesList.clear()

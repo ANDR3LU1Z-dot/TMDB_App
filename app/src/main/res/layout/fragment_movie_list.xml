@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/list"
-    android:name="com.example.movieapp.MovieFragment"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#A8A5A5"
-    app:layoutManager="LinearLayoutManager"
-    tools:context=".MovieFragment"
-    tools:listitem="@layout/fragment_item" />
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/list"
+        android:name="com.example.movieapp.MovieFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#A8A5A5"
+        app:layoutManager="LinearLayoutManager"
+        tools:context=".MovieFragment"
+        tools:listitem="@layout/fragment_movie_item" />
+</layout>
 

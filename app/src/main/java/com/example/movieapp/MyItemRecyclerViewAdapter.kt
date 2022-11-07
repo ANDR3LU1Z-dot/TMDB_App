@@ -4,21 +4,28 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.movieapp.databinding.FragmentItemBinding
+import com.example.movieapp.databinding.FragmentMovieItemBinding
 
 interface MovieItemListener{
     fun onItemSelected(position: Int)
 }
 
 class MyItemRecyclerViewAdapter(
-    private val values: List<BodyCardMovies>,
     private val listener: MovieItemListener
 ) : RecyclerView.Adapter<MyItemRecyclerViewAdapter.ViewHolder>() {
+
+    private val values: MutableList<BodyCardMovies> = ArrayList()
+
+    fun updateData(movieList: List<BodyCardMovies>){
+        values.clear()
+        values.addAll(movieList)
+        notifyDataSetChanged()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
         return ViewHolder(
-            FragmentItemBinding.inflate(
+            FragmentMovieItemBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
@@ -34,12 +41,11 @@ class MyItemRecyclerViewAdapter(
             listener.onItemSelected(position)
         }
 
-
     }
 
     override fun getItemCount(): Int = values.size
 
-    inner class ViewHolder(private val binding: FragmentItemBinding) :
+    inner class ViewHolder(private val binding: FragmentMovieItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         val view: View = binding.root
