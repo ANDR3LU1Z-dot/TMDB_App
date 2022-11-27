@@ -25,7 +25,7 @@ class MovieFragment : Fragment(), MovieItemListener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val binding = FragmentMovieListBinding.inflate(inflater)
 
         val view = binding.root as RecyclerView
