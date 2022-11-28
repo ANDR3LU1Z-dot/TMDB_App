@@ -8,10 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.movieapp.databinding.FragmentMovieItemBinding
 import com.example.movieapp.databinding.FragmentMovieListBinding
 
 class MovieFragment : Fragment(), MovieItemListener {
@@ -42,7 +40,7 @@ class MovieFragment : Fragment(), MovieItemListener {
         return view
     }
 
-    fun initObservers(){
+    private fun initObservers(){
         viewModel.movieListLiveData.observe(viewLifecycleOwner, Observer {
             adapter.updateData(it)
         })
