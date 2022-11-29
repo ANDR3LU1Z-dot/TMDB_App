@@ -11,7 +11,6 @@ import androidx.navigation.fragment.NavHostFragment
 import com.example.movieapp.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
-
     private lateinit var bindingMain: ActivityMainBinding
     private lateinit var navController: NavController
     private lateinit var searchView: View
@@ -31,7 +30,6 @@ class MainActivity : AppCompatActivity() {
 
         searchView = bindingMain.searchView
 
-
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.movieDetailsFragment -> searchView.visibility = View.GONE
@@ -39,7 +37,8 @@ class MainActivity : AppCompatActivity() {
             }
 
         }
-        viewModel.addState()
+
+        viewModel.addState(DataState.Loading)
         initObservers()
     }
 
@@ -50,7 +49,7 @@ class MainActivity : AppCompatActivity() {
                 DataState.Error -> println("Error")
                 DataState.Loading -> {
                     loading.startLoading()
-                    handle.postDelayed({ loading.isDismiss() }, 10000)
+                    handle.postDelayed({ loading.isDismiss() }, 5000)
                 }
                 else -> println("Success")
             }

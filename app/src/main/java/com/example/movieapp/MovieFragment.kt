@@ -15,7 +15,6 @@ import com.example.movieapp.databinding.FragmentMovieListBinding
 class MovieFragment : Fragment(), MovieItemListener {
 
     private lateinit var adapter: MyItemRecyclerViewAdapter
-
     private val viewModel by navGraphViewModels<MovieViewModel>(R.id.movie_graph){
         defaultViewModelProviderFactory
     }

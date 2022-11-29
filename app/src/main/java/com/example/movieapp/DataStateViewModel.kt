@@ -11,7 +11,7 @@ class DataStateViewModel: ViewModel() {
 
     private val _dataStateLiveData = MutableLiveData<DataState>()
 
-    fun addState(){
-        _dataStateLiveData.postValue(DataState.Loading)
+    fun addState(state: DataState){
+        _dataStateLiveData.postValue(state)
     }
 }
