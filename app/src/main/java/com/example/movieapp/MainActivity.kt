@@ -14,9 +14,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var bindingMain: ActivityMainBinding
     private lateinit var navController: NavController
     private lateinit var searchView: View
-    private val loading = LoadingProgressBar(this)
-    private val handle = Handler()
-    private val viewModel by viewModels<DataStateViewModel> { defaultViewModelProviderFactory }
+//    private val viewModel by viewModels<DataStateViewModel> { defaultViewModelProviderFactory }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,23 +35,6 @@ class MainActivity : AppCompatActivity() {
             }
 
         }
-
-        viewModel.addState(DataState.Loading)
-        initObservers()
-    }
-
-    private fun initObservers(){
-        viewModel.dataStateLiveData.observe(this, Observer{
-
-            when(it){
-                DataState.Error -> println("Error")
-                DataState.Loading -> {
-                    loading.startLoading()
-                    handle.postDelayed({ loading.isDismiss() }, 5000)
-                }
-                else -> println("Success")
-            }
-        })
     }
 
     override fun onNavigateUp(): Boolean {
