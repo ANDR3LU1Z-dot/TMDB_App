@@ -6,4 +6,9 @@
     <string name="text_movie_title">Tudo em todo lugar ao mesmo tempo</string>
     <string name="label_content_text">ContentText</string>
     <string name="text_movies_synopsis">Sinopse: Uma ruptura interdimensional bagunça a realidade e uma inesperada heroína precisa usar seus novos poderes para lutar contra os perigos bizarros do multiverso.</string>
+    <string name="title_error_message_dialog">Erro</string>
+    <string name="text_error_message_dialog">Não foi possível carregar a lista de filmes, por favor, tente novamente mais tarde.</string>
+    <string name="text_btn_error_message_dialog">OK</string>
+    <string name="title_unexpected_message_dialog">Opa…Isso não deveria ter acontecido</string>
+    <string name="text_unexpected_message_dialog">Estamos com problemas técnicos, tente novamente mais tarde.</string>
 </resources>

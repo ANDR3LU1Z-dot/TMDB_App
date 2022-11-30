@@ -3,7 +3,6 @@ package com.example.movieapp
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.os.Bundle
-import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -43,7 +42,7 @@ class MovieFragment : Fragment(), MovieItemListener {
             this.layoutManager = LinearLayoutManager(context)
         }
 
-        viewModel.addState(DataState.Error)
+        viewModel.addState(DataState.Success)
         initObservers()
         return view
     }
@@ -54,15 +53,13 @@ class MovieFragment : Fragment(), MovieItemListener {
 
             when(it){
                 DataState.Error -> showErrorDialog()
-                DataState.Loading -> {
-                    progressBar.visibility = View.VISIBLE
-                }
+                DataState.Loading -> progressBar.visibility = View.VISIBLE
                 DataState.Success -> {
                     viewModel.movieListLiveData.observe(viewLifecycleOwner, Observer { MovieList ->
                         adapter.updateData(MovieList)
                     })
                 }
-                else -> println("Ops...algum erro inesperado ocorreu, tente novamente mais tarde.")
+                else -> showUnexpectedMessageDialog()
             }
         })
 
@@ -75,9 +72,21 @@ class MovieFragment : Fragment(), MovieItemListener {
 
     private fun showErrorDialog(){
         val builder = AlertDialog.Builder(requireContext())
-        builder.setTitle("Erro")
-        builder.setMessage("Não foi possível carregar a lista de filmes, tente novamente mais tarde.")
-        builder.setPositiveButton("Ok", DialogInterface.OnClickListener{ _, _ ->
+        builder.setTitle(R.string.title_error_message_dialog)
+        builder.setMessage(R.string.text_error_message_dialog)
+        builder.setPositiveButton(R.string.text_btn_error_message_dialog, DialogInterface.OnClickListener{ _, _ ->
+            activity?.finish()
+        } )
+        builder.create()
+        builder.show()
+
+    }
+
+    private fun showUnexpectedMessageDialog(){
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle(R.string.title_unexpected_message_dialog)
+        builder.setMessage(R.string.text_unexpected_message_dialog)
+        builder.setPositiveButton(R.string.text_btn_error_message_dialog, DialogInterface.OnClickListener{ _, _ ->
             activity?.finish()
         } )
         builder.create()
