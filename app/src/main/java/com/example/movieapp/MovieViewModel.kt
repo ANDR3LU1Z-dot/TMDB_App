@@ -21,6 +21,15 @@ class MovieViewModel: ViewModel() {
         get() = _navigationToDetailLiveData
     private val _navigationToDetailLiveData = MutableLiveData<Unit>()
 
+    val dataStateLiveData: LiveData<DataState>
+        get() = _dataStateLiveData
+
+    private val _dataStateLiveData = MutableLiveData<DataState>()
+
+    fun addState(state: DataState){
+        _dataStateLiveData.postValue(state)
+    }
+
     init {
         _movieListLiveData.postValue(MockupMovies.cardMoviesList)
     }
