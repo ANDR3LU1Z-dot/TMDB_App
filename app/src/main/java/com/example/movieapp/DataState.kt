@@ -5,4 +5,3 @@ enum class DataState() {
     Loading,
     Success;
 }
-

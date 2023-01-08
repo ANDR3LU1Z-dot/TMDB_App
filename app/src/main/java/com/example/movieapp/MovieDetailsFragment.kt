@@ -44,21 +44,18 @@ class MovieDetailsFragment : Fragment() {
         list.add(
             CarouselItem(
                 imageDrawable = R.drawable.tudo_em_todo_lugar
-
             )
         )
 
         list.add(
             CarouselItem(
                 imageDrawable = R.drawable.tudo_em_todo_lugar3
-
             )
         )
 
         list.add(
             CarouselItem(
                 imageDrawable = R.drawable.tudo_em_todo_lugar4
-
             )
         )
 
