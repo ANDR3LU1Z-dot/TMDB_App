@@ -1,9 +1,10 @@
-package com.example.movieapp
+package com.example.movieapp.movieFragment
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.movieapp.data.Results
 import com.example.movieapp.databinding.FragmentMovieItemBinding
 
 interface MovieItemListener{
@@ -14,11 +15,10 @@ class MyItemRecyclerViewAdapter(
     private val listener: MovieItemListener
 ) : RecyclerView.Adapter<MyItemRecyclerViewAdapter.ViewHolder>() {
 
-    private val values: MutableList<BodyCardMovies> = ArrayList()
+    private var values: List<Results> = ArrayList()
 
-    fun updateData(movieList: List<BodyCardMovies>){
-        values.clear()
-        values.addAll(movieList)
+    fun updateData(movieList: List<Results>){
+        values = movieList
         notifyDataSetChanged()
     }
 
@@ -50,7 +50,7 @@ class MyItemRecyclerViewAdapter(
 
         val view: View = binding.root
 
-        fun bindItem(item: BodyCardMovies){
+        fun bindItem(item: Results){
             binding.movieItem = item
             binding.executePendingBindings()
         }

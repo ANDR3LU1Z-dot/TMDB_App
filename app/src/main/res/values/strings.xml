@@ -11,4 +11,5 @@
     <string name="text_btn_error_message_dialog">OK</string>
     <string name="title_unexpected_message_dialog">Opa…Isso não deveria ter acontecido</string>
     <string name="text_unexpected_message_dialog">Estamos com problemas técnicos, tente novamente mais tarde.</string>
+    <string name="error_msg">Ops, aconteceu um erro. Tente novamente mais tarde</string>
 </resources>

@@ -1,8 +1,16 @@
 package com.example.movieapp
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.movieapp.data.*
+import com.example.movieapp.movieDetails.MovieDetails
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.moshi.MoshiConverterFactory
 
 class MovieViewModel: ViewModel() {
 
@@ -12,9 +20,9 @@ class MovieViewModel: ViewModel() {
     private val _movieDetailsLiveData = MutableLiveData<MovieDetails>()
 
     //MovieList LiveData
-    val movieListLiveData: LiveData<MutableList<BodyCardMovies>>
+    val movieListLiveData: LiveData<List<Results>?>
         get() = _movieListLiveData
-    private val _movieListLiveData = MutableLiveData<MutableList<BodyCardMovies>>()
+    private val _movieListLiveData = MutableLiveData<List<Results>?>()
 
     //Navigation LiveData
     val navigationToDetailLiveData
@@ -26,12 +34,43 @@ class MovieViewModel: ViewModel() {
 
     private val _dataStateLiveData = MutableLiveData<DataState>()
 
-    fun addState(state: DataState){
-        _dataStateLiveData.postValue(state)
-    }
+    val appState: LiveData<DataState>
+        get() = _appState
+    private val _appState = MutableLiveData<DataState>()
+
+    private val retrofit = Retrofit.Builder()
+        .baseUrl(ApiCredentials.baseUrl)
+        .addConverterFactory(MoshiConverterFactory.create())
+        .build()
+
+    private val movieService = retrofit.create(MovieService::class.java)
 
     init {
-        _movieListLiveData.postValue(MockupMovies.cardMoviesList)
+        _appState.postValue(DataState.Loading)
+        getMoviesData()
+    }
+
+    private fun getMoviesData(){
+        movieService.getMovieList(ApiCredentials.api_key, ApiCredentials.language, 1, ApiCredentials.region).enqueue(object: Callback<MovieListResponse>{
+            override fun onResponse(
+                call: Call<MovieListResponse>,
+                response: Response<MovieListResponse>
+            ) {
+                Log.d("response", "${response.body()}")
+                if(response.isSuccessful){
+                    _movieListLiveData.postValue(response.body()?.results)
+                    _appState.postValue(DataState.Success)
+                } else {
+                    _appState.postValue(DataState.Error)
+                }
+            }
+
+            override fun onFailure(call: Call<MovieListResponse>, t: Throwable) {
+                Log.d("response", "$t")
+                _appState.postValue(DataState.Error)
+            }
+
+        } )
     }
 
     fun onMovieSelected(position: Int){

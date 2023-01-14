@@ -1,4 +1,4 @@
-package com.example.movieapp
+package com.example.movieapp.data
 
 data class BodyCardMovies(
 
