@@ -6,5 +6,6 @@ class ApiCredentials {
         val baseUrl = "https://api.themoviedb.org/3/"
         val language = "pt-BR"
         val region = "BR"
+        val imageUrl = "https://image.tmdb.org/t/p/w780/"
     }
 }

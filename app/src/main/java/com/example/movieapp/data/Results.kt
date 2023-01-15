@@ -1,5 +1,6 @@
 package com.example.movieapp.data
 
+import com.example.movieapp.ApiCredentials
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
@@ -10,5 +11,5 @@ data class Results(
     val original_title: String?,
     val title: String?
 ){
-
+    fun getImageUrl() = ApiCredentials.imageUrl + poster_path
 }

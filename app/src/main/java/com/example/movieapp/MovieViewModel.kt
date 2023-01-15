@@ -1,6 +1,9 @@
 package com.example.movieapp
 
+import android.app.Application
+import android.content.Context
 import android.util.Log
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -56,7 +59,7 @@ class MovieViewModel: ViewModel() {
                 call: Call<MovieListResponse>,
                 response: Response<MovieListResponse>
             ) {
-                Log.d("response", "${response.body()}")
+//                Log.d("response", "${response.body()}")
                 if(response.isSuccessful){
                     _movieListLiveData.postValue(response.body()?.results)
                     _appState.postValue(DataState.Success)
@@ -66,7 +69,7 @@ class MovieViewModel: ViewModel() {
             }
 
             override fun onFailure(call: Call<MovieListResponse>, t: Throwable) {
-                Log.d("response", "$t")
+//                Log.d("response", "$t")
                 _appState.postValue(DataState.Error)
             }
 
