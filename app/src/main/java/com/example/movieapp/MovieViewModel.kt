@@ -1,9 +1,5 @@
 package com.example.movieapp
 
-import android.app.Application
-import android.content.Context
-import android.util.Log
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -72,7 +68,7 @@ class MovieViewModel: ViewModel() {
     }
 
     fun getMovieDetails(){
-        TODO("Fazer a requisição dos detailhes do filme")
+        TODO("Fazer a requisição dos detalhes do filme")
     }
 
     fun onMovieSelected(position: Int){
