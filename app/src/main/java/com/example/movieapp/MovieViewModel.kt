@@ -32,11 +32,6 @@ class MovieViewModel: ViewModel() {
         get() = _navigationToDetailLiveData
     private val _navigationToDetailLiveData = MutableLiveData<Unit>()
 
-    val dataStateLiveData: LiveData<DataState>
-        get() = _dataStateLiveData
-
-    private val _dataStateLiveData = MutableLiveData<DataState>()
-
     val appState: LiveData<DataState>
         get() = _appState
     private val _appState = MutableLiveData<DataState>()
@@ -74,6 +69,10 @@ class MovieViewModel: ViewModel() {
             }
 
         } )
+    }
+
+    fun getMovieDetails(){
+        TODO("Fazer a requisição dos detailhes do filme")
     }
 
     fun onMovieSelected(position: Int){
