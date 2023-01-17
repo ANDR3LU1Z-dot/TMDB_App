@@ -15,13 +15,12 @@ interface MovieService {
         @Query("language") language: String,
         @Query("page") page: Int,
         @Query("region") region: String
-    ) : Call<MovieListResponse>
+    ): Call<MovieListResponse>
 
     @GET("movie/{movie_id}")
     fun getMovieDetails(
         @Path("movie_id") movie_id: Int,
         @Query("api_key") api_key: String,
         @Query("language") language: String,
-        @Query("append_to_response") append_to_response: String
     ): Call<MovieDetailsResponse>
 }

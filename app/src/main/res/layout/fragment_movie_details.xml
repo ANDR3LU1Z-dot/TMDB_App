@@ -14,14 +14,12 @@
         android:layout_height="match_parent"
         tools:context=".movieDetails.MovieDetailsFragment">
 
-        <!-- TODO: Update blank fragment layout -->
-
         <ImageView
             android:id="@+id/imageView2"
             android:layout_width="0dp"
-            android:layout_height="174dp"
+            android:layout_height="175dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/tudo_em_todo_lugar"
+            app:srcUrl='@{movieViewModel.movieDetailsLiveData.imageUrl ?? ""}'
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -31,6 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingStart="10dp"
+            android:paddingEnd="10dp"
             android:text="@{movieViewModel.movieDetailsLiveData.title}"
             android:textSize="24sp"
             android:textStyle="bold"
@@ -44,7 +43,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:padding="10dp"
-            android:text="@{movieViewModel.movieDetailsLiveData.content}"
+            android:text="@{movieViewModel.movieDetailsLiveData.overview}"
             android:textSize="20sp"
             app:layout_constraintBottom_toTopOf="@+id/movieScore_label"
             app:layout_constraintEnd_toEndOf="parent"
@@ -69,7 +68,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:padding="10dp"
-            android:text="@{movieViewModel.movieDetailsLiveData.score}"
+            android:text="@{movieViewModel.movieDetailsLiveData.vote_average.toString()}"
             android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"

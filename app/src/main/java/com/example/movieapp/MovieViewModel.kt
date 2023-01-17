@@ -1,5 +1,6 @@
 package com.example.movieapp
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,11 +13,12 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 class MovieViewModel: ViewModel() {
+    private lateinit var movieList: List<Results>
 
     //MovieDetails LiveData
-    val movieDetailsLiveData: LiveData<MovieDetails>
+    val movieDetailsLiveData: LiveData<MovieDetailsResponse>
         get() = _movieDetailsLiveData
-    private val _movieDetailsLiveData = MutableLiveData<MovieDetails>()
+    private val _movieDetailsLiveData = MutableLiveData<MovieDetailsResponse>()
 
     //MovieList LiveData
     val movieListLiveData: LiveData<List<Results>?>
@@ -50,8 +52,8 @@ class MovieViewModel: ViewModel() {
                 call: Call<MovieListResponse>,
                 response: Response<MovieListResponse>
             ) {
-//                Log.d("response", "${response.body()}")
                 if(response.isSuccessful){
+                    movieList = response.body()?.results!!
                     _movieListLiveData.postValue(response.body()?.results)
                     _appState.postValue(DataState.Success)
                 } else {
@@ -60,20 +62,31 @@ class MovieViewModel: ViewModel() {
             }
 
             override fun onFailure(call: Call<MovieListResponse>, t: Throwable) {
-//                Log.d("response", "$t")
                 _appState.postValue(DataState.Error)
             }
 
         } )
     }
 
-    fun getMovieDetails(){
-        TODO("Fazer a requisição dos detalhes do filme")
+    private fun getMovieDetails(id: Int){
+        movieService.getMovieDetails(id, ApiCredentials.api_key, ApiCredentials.language).enqueue(object: Callback<MovieDetailsResponse>{
+            override fun onResponse(
+                call: Call<MovieDetailsResponse>,
+                response: Response<MovieDetailsResponse>
+            ) {
+                Log.d("response", "${response.body()}")
+                _movieDetailsLiveData.postValue(response.body())
+            }
+
+            override fun onFailure(call: Call<MovieDetailsResponse>, t: Throwable) {
+                Log.d("response", "$t")
+            }
+
+        })
     }
 
     fun onMovieSelected(position: Int){
-        val movieDetails = MovieDetails("Filme 1", "Texto do conteúdo da sinopse", "10/10")
-        _movieDetailsLiveData.postValue(movieDetails)
+        getMovieDetails(movieList[position].id)
         _navigationToDetailLiveData.postValue(Unit)
     }
 
