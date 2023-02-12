@@ -30,7 +30,7 @@ class MovieFragment : Fragment(), MovieItemListener {
         recyclerView = binding.list
 
         binding.viewModel = viewModel
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = this.viewLifecycleOwner
 
         adapter = MyItemRecyclerViewAdapter(this)
 
@@ -50,24 +50,11 @@ class MovieFragment : Fragment(), MovieItemListener {
            }
         })
 
-
         viewModel.navigationToDetailLiveData.observe(viewLifecycleOwner, Observer {
             val action = MovieFragmentDirections.actionMovieFragmentToMovieDetailsFragment()
             findNavController().navigate(action)
         })
     }
-
-//    private fun showErrorDialog(){
-//        val builder = AlertDialog.Builder(requireContext())
-//        builder.setTitle(R.string.title_error_message_dialog)
-//        builder.setMessage(R.string.text_error_message_dialog)
-//        builder.setPositiveButton(R.string.text_btn_error_message_dialog, DialogInterface.OnClickListener{ _, _ ->
-//            activity?.finish()
-//        } )
-//        builder.create()
-//        builder.show()
-//
-//    }
 
     override fun onItemSelected(position: Int) {
         viewModel.onMovieSelected(position)
