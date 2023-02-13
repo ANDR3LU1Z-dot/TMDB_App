@@ -23,4 +23,12 @@ interface MovieService {
         @Query("api_key") api_key: String,
         @Query("language") language: String,
     ): Call<MovieDetailsResponse>
+
+    @GET("movie/{movie_id}/images")
+    fun getMoviePosters(
+        @Path("movie_id") movie_id: Int,
+        @Query("api_key") api_key: String,
+        @Query("language") language: String,
+        @Query("include_image_language") include_image_language: String
+    ): Call<MoviePostersResponse>
 }
