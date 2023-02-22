@@ -13,4 +13,5 @@
     <string name="text_unexpected_message_dialog">Estamos com problemas técnicos, tente novamente mais tarde.</string>
     <string name="error_msg">Ops, aconteceu um erro. Tente novamente mais tarde</string>
     <string name="avaliacao_tmdb_label">Avaliação da TMDB:</string>
+    <string name="text_release_date_label">Data de Lançamento:</string>
 </resources>

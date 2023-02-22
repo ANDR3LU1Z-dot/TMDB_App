@@ -5,9 +5,14 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import com.example.movieapp.R
+import java.text.SimpleDateFormat
+import java.util.*
 
 class MovieUtils {
     companion object{
+
+        val formatDate = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+
         private fun showErrorDialog(activity: Activity, context: Context){
             val builder = AlertDialog.Builder(context)
             builder.setTitle(R.string.title_error_message_dialog)

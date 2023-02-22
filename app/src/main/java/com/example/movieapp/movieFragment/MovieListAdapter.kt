@@ -11,9 +11,9 @@ interface MovieItemListener{
     fun onItemSelected(position: Int)
 }
 
-class MyItemRecyclerViewAdapter(
+class MovieListAdapter(
     private val listener: MovieItemListener
-) : RecyclerView.Adapter<MyItemRecyclerViewAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<MovieListAdapter.ViewHolder>() {
 
     private var values: List<Results> = ArrayList()
 

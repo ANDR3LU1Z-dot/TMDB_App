@@ -15,7 +15,7 @@ import com.example.movieapp.databinding.FragmentMovieListBinding
 
 class MovieFragment : Fragment(), MovieItemListener {
 
-    private lateinit var adapter: MyItemRecyclerViewAdapter
+    private lateinit var adapter: MovieListAdapter
     private lateinit var recyclerView: RecyclerView
     private val viewModel by navGraphViewModels<MovieViewModel>(R.id.movie_graph){
         defaultViewModelProviderFactory
@@ -32,7 +32,7 @@ class MovieFragment : Fragment(), MovieItemListener {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this.viewLifecycleOwner
 
-        adapter = MyItemRecyclerViewAdapter(this)
+        adapter = MovieListAdapter(this)
 
         recyclerView.apply {
             this.adapter = this@MovieFragment.adapter
