@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.movieapp.data.*
 import kotlinx.coroutines.*
 import retrofit2.Call
@@ -76,8 +77,7 @@ class MovieViewModel: ViewModel() {
         }
     }
 
-    private suspend fun getMovieDetailsData(id: Int) = coroutineScope{
-        launch(Dispatchers.IO){
+    fun getMovieDetailsData(id: Int) = viewModelScope.launch{
             movieService.getMovieDetails(id, ApiCredentials.api_key, ApiCredentials.language)
                 .enqueue(object : Callback<MovieDetailsResponse> {
                 override fun onResponse(
@@ -93,12 +93,9 @@ class MovieViewModel: ViewModel() {
                 }
 
             })
-        }
-
     }
 
-    private suspend fun getMoviePostersData(id: Int) = coroutineScope {
-        launch ( Dispatchers.IO ){
+    fun getMoviePostersData(id: Int) = viewModelScope.launch {
             movieService.getMoviePosters(id, ApiCredentials.api_key, ApiCredentials.language,
                 ApiCredentials.include_image_language).enqueue(object : Callback<MoviePostersResponse>{
                 override fun onResponse(call: Call<MoviePostersResponse>, response: Response<MoviePostersResponse>) {
@@ -112,15 +109,15 @@ class MovieViewModel: ViewModel() {
                 }
 
             })
-        }
+
     }
 
-    fun onMovieSelected(position: Int){
-        GlobalScope.launch {
-            getMovieDetailsData(movieList[position].id)
-            getMoviePostersData(movieList[position].id)
-        }
-        _navigationToDetailLiveData.postValue(Unit)
-    }
+//    fun onMovieSelected(position: Int){
+//        GlobalScope.launch {
+//            getMovieDetailsData(movieList[position].id)
+//            getMoviePostersData(movieList[position].id)
+//        }
+//        _navigationToDetailLiveData.postValue(Unit)
+//    }
 
 }

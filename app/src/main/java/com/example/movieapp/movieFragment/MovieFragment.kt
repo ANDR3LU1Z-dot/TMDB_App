@@ -12,10 +12,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.movieapp.*
 import com.example.movieapp.databinding.FragmentMovieListBinding
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
-class MovieFragment : Fragment(), MovieItemListener {
+class MovieFragment : Fragment() {
 
-    private lateinit var adapter: MovieListAdapter
+    private lateinit var movieAdapter: MovieListAdapter
     private lateinit var recyclerView: RecyclerView
     private val viewModel by navGraphViewModels<MovieViewModel>(R.id.movie_graph){
         defaultViewModelProviderFactory
@@ -32,10 +34,10 @@ class MovieFragment : Fragment(), MovieItemListener {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this.viewLifecycleOwner
 
-        adapter = MovieListAdapter(this)
+        movieAdapter = MovieListAdapter()
 
         recyclerView.apply {
-            this.adapter = this@MovieFragment.adapter
+            this.adapter = this@MovieFragment.movieAdapter
             this.layoutManager = LinearLayoutManager(context)
         }
 
@@ -43,21 +45,29 @@ class MovieFragment : Fragment(), MovieItemListener {
         return view
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        movieAdapter.onMovieClick {
+            val action = MovieFragmentDirections.actionMovieFragmentToMovieDetailsFragment(it)
+            findNavController().navigate(action)
+        }
+    }
+
     private fun initObservers(){
         viewModel.movieListLiveData.observe(viewLifecycleOwner, Observer {
            it?.let {
-               adapter.updateData(it)
+               movieAdapter.updateData(it)
            }
         })
 
-        viewModel.navigationToDetailLiveData.observe(viewLifecycleOwner, Observer {
-            val action = MovieFragmentDirections.actionMovieFragmentToMovieDetailsFragment()
-            findNavController().navigate(action)
-        })
+//        viewModel.navigationToDetailLiveData.observe(viewLifecycleOwner, Observer {
+//            val action = MovieFragmentDirections.actionMovieFragmentToMovieDetailsFragment()
+//            findNavController().navigate(action)
+//        })
     }
 
-    override fun onItemSelected(position: Int) {
-        viewModel.onMovieSelected(position)
-    }
+//    override fun onItemSelected(position: Int) {
+//        viewModel.onMovieSelected(position)
+//    }
 
 }

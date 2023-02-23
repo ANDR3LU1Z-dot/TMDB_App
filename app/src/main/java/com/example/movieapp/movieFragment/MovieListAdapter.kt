@@ -7,13 +7,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.movieapp.data.Results
 import com.example.movieapp.databinding.FragmentMovieItemBinding
 
-interface MovieItemListener{
-    fun onItemSelected(position: Int)
-}
+//interface MovieItemListener{
+//    fun onItemSelected(position: Int)
+//}
 
-class MovieListAdapter(
-    private val listener: MovieItemListener
-) : RecyclerView.Adapter<MovieListAdapter.ViewHolder>() {
+class MovieListAdapter() : RecyclerView.Adapter<MovieListAdapter.ViewHolder>() {
+
+    var onClick : ((Int) -> Unit)? = null
 
     private var values: List<Results> = ArrayList()
 
@@ -38,12 +38,19 @@ class MovieListAdapter(
         val item = values[position]
         holder.bindItem(item)
         holder.view.setOnClickListener {
-            listener.onItemSelected(position)
+            onClick?.let {
+                it(item.id)
+            }
+//            listener.onItemSelected(position)
         }
 
     }
 
     override fun getItemCount(): Int = values.size
+
+    fun onMovieClick(listener: (Int)-> Unit){
+        onClick = listener
+    }
 
     inner class ViewHolder(private val binding: FragmentMovieItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
