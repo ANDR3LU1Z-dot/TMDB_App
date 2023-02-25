@@ -19,9 +19,5 @@
         android:id="@+id/movieDetailsFragment"
         android:name="com.example.movieapp.movieDetails.MovieDetailsFragment"
         android:label="fragment_movie_details"
-        tools:layout="@layout/fragment_movie_details" >
-        <argument
-            android:name="movie_id"
-            app:argType="integer" />
-    </fragment>
+        tools:layout="@layout/fragment_movie_details" />
 </navigation>
