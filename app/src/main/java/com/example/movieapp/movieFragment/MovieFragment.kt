@@ -12,12 +12,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.movieapp.*
 import com.example.movieapp.databinding.FragmentMovieListBinding
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
-class MovieFragment : Fragment() {
+class MovieFragment : Fragment(), MovieItemListener {
 
-    private lateinit var movieAdapter: MovieListAdapter
+    private lateinit var adapter: MovieListAdapter
     private lateinit var recyclerView: RecyclerView
     private val viewModel by navGraphViewModels<MovieViewModel>(R.id.movie_graph){
         defaultViewModelProviderFactory
@@ -34,10 +32,10 @@ class MovieFragment : Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this.viewLifecycleOwner
 
-        movieAdapter = MovieListAdapter()
+        adapter = MovieListAdapter(this)
 
         recyclerView.apply {
-            this.adapter = this@MovieFragment.movieAdapter
+            this.adapter = this@MovieFragment.adapter
             this.layoutManager = LinearLayoutManager(context)
         }
 
@@ -45,18 +43,10 @@ class MovieFragment : Fragment() {
         return view
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        movieAdapter.onMovieClick {
-            val action = MovieFragmentDirections.actionMovieFragmentToMovieDetailsFragment(it)
-            findNavController().navigate(action)
-        }
-    }
-
     private fun initObservers(){
         viewModel.movieListLiveData.observe(viewLifecycleOwner, Observer {
            it?.let {
-               movieAdapter.updateData(it)
+               adapter.updateData(it)
            }
         })
 
@@ -66,8 +56,10 @@ class MovieFragment : Fragment() {
 //        })
     }
 
-//    override fun onItemSelected(position: Int) {
-//        viewModel.onMovieSelected(position)
-//    }
+    override fun onItemSelected(position: Int) {
+        viewModel.onMovieSelected(position)
+        val action = MovieFragmentDirections.actionMovieFragmentToMovieDetailsFragment()
+        findNavController().navigate(action)
+    }
 
 }
