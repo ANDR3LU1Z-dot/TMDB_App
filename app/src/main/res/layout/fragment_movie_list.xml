@@ -11,10 +11,19 @@
             type="com.example.movieapp.MovieViewModel" />
     </data>
 
-    <androidx.appcompat.widget.LinearLayoutCompat
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
+        <include
+            android:id="@+id/loading_item"
+            layout="@layout/loading_item"
+            android:visibility="@{viewModel.appState == DataState.Loading ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/list"
@@ -24,42 +33,37 @@
             android:background="#A8A5A5"
             android:visibility="@{viewModel.appState == DataState.Success ? View.VISIBLE : View.GONE}"
             app:layoutManager="LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             tools:context=".movieFragment.MovieFragment"
             tools:listitem="@layout/fragment_movie_item" />
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
             android:gravity="center"
-            android:visibility="@{viewModel.appState == DataState.Loading ? View.VISIBLE : View.GONE}"
+            android:orientation="vertical"
+            android:visibility="@{viewModel.appState == DataState.Error ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="gone"
             >
 
-            <ProgressBar
-                android:id="@+id/progress_loading"
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                />
-
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:visibility="@{viewModel.appState == DataState.Error ? View.VISIBLE : View.GONE}">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="16dp"
-                    android:gravity="center"
-                    android:text="@string/error_msg" />
-            </androidx.appcompat.widget.LinearLayoutCompat>
-
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="16dp"
+                android:gravity="center"
+                android:text="@string/error_msg" />
         </androidx.appcompat.widget.LinearLayoutCompat>
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>
 

@@ -60,7 +60,7 @@ class MovieViewModel: ViewModel() {
                     response: Response<MovieListResponse>
                 ) {
                     if(response.isSuccessful){
-//                        Log.d("movieList", "${response.body()?.results}")
+                        Log.d("movieList", "${response.body()?.results}")
                         movieList = response.body()?.results!!
                         _movieListLiveData.postValue(response.body()?.results)
                         _appState.postValue(DataState.Success)
@@ -84,12 +84,12 @@ class MovieViewModel: ViewModel() {
                     call: Call<MovieDetailsResponse>,
                     response: Response<MovieDetailsResponse>
                 ) {
-//                    Log.d("response", "${response.body()}")
+                    Log.d("response", "${response.body()}")
                     _movieDetailsLiveData.postValue(response.body())
                 }
 
                 override fun onFailure(call: Call<MovieDetailsResponse>, t: Throwable) {
-//                    Log.d("response", "$t")
+                    Log.d("response", "$t")
                 }
 
             })
@@ -105,6 +105,7 @@ class MovieViewModel: ViewModel() {
 //                    Log.d("response", "$response")
                     Log.d("response", "${response.body()?.posters}")
                     _moviePostersLiveData.postValue(response.body()?.posters)
+                    _appState.postValue(DataState.Success)
                 }
 
                 override fun onFailure(call: Call<MoviePostersResponse>, t: Throwable) {
@@ -116,6 +117,7 @@ class MovieViewModel: ViewModel() {
     }
 
     fun onMovieSelected(position: Int){
+        _appState.postValue(DataState.Loading)
         GlobalScope.launch {
             getMovieDetailsData(movieList[position].id)
             getMoviePostersData(movieList[position].id)

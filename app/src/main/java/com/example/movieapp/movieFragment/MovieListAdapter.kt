@@ -7,17 +7,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.movieapp.data.Results
 import com.example.movieapp.databinding.FragmentMovieItemBinding
 
-interface MovieItemListener{
+interface MovieItemListener {
     fun onItemSelected(position: Int)
 }
 
-class MovieListAdapter(
-    private val listener: MovieItemListener
-) : RecyclerView.Adapter<MovieListAdapter.ViewHolder>() {
+class MovieListAdapter(private val listener: MovieItemListener) : RecyclerView.Adapter<MovieListAdapter.ViewHolder>() {
 
     private var values: List<Results> = ArrayList()
 
-    fun updateData(movieList: List<Results>){
+    fun updateData(movieList: List<Results>) {
         values = movieList
         notifyDataSetChanged()
     }
@@ -37,7 +35,7 @@ class MovieListAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = values[position]
         holder.bindItem(item)
-        holder.view.setOnClickListener {
+        holder.view.setOnClickListener{
             listener.onItemSelected(position)
         }
 
@@ -50,7 +48,7 @@ class MovieListAdapter(
 
         val view: View = binding.root
 
-        fun bindItem(item: Results){
+        fun bindItem(item: Results) {
             binding.movieItem = item
             binding.executePendingBindings()
         }
