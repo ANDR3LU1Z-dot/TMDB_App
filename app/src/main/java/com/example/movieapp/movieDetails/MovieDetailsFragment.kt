@@ -19,6 +19,7 @@ import org.imaginativeworld.whynotimagecarousel.model.CarouselItem
 class MovieDetailsFragment : Fragment() {
     private val viewModel by navGraphViewModels<MovieViewModel>(R.id.movie_graph) { defaultViewModelProviderFactory }
     private lateinit var binding: FragmentMovieDetailsBinding
+    val list: MutableList<CarouselItem> = mutableListOf()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,21 +35,15 @@ class MovieDetailsFragment : Fragment() {
 
         binding.lifecycleOwner = this.viewLifecycleOwner
         binding.movieViewModel = viewModel
-
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         val carouselList: ImageCarousel = binding.carousel
 
         setCarouselView(carouselList)
-
+        return binding.root
     }
 
     private fun setCarouselView(carousel: ImageCarousel) {
-        val list: MutableList<CarouselItem> = mutableListOf()
         viewModel.moviePostersLiveData.observe(viewLifecycleOwner, Observer {
+            carousel.registerLifecycle(viewLifecycleOwner)
             if (it.isNullOrEmpty() || it.size < 3) {
                 binding.carousel.visibility = View.GONE
                 Toast.makeText(
@@ -57,6 +52,7 @@ class MovieDetailsFragment : Fragment() {
                     Toast.LENGTH_SHORT
                 ).show()
             } else {
+                binding.carousel.visibility = View.VISIBLE
                 list.clear()
                 list.add(
                     CarouselItem(

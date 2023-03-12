@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.movieapp.data.*
 import kotlinx.coroutines.*
 import retrofit2.Call
@@ -61,7 +60,7 @@ class MovieViewModel: ViewModel() {
                     response: Response<MovieListResponse>
                 ) {
                     if(response.isSuccessful){
-//                        Log.d("movieList", "${response.body()?.results}")
+                        Log.d("movieList", "${response.body()?.results}")
                         movieList = response.body()?.results!!
                         _movieListLiveData.postValue(response.body()?.results)
                         _appState.postValue(DataState.Success)
@@ -77,31 +76,36 @@ class MovieViewModel: ViewModel() {
         }
     }
 
-    fun getMovieDetailsData(id: Int) = viewModelScope.launch{
+    private suspend fun getMovieDetailsData(id: Int) = coroutineScope{
+        launch(Dispatchers.IO){
             movieService.getMovieDetails(id, ApiCredentials.api_key, ApiCredentials.language)
                 .enqueue(object : Callback<MovieDetailsResponse> {
                 override fun onResponse(
                     call: Call<MovieDetailsResponse>,
                     response: Response<MovieDetailsResponse>
                 ) {
-//                    Log.d("response", "${response.body()}")
+                    Log.d("response", "${response.body()}")
                     _movieDetailsLiveData.postValue(response.body())
                 }
 
                 override fun onFailure(call: Call<MovieDetailsResponse>, t: Throwable) {
-//                    Log.d("response", "$t")
+                    Log.d("response", "$t")
                 }
 
             })
+        }
+
     }
 
-    fun getMoviePostersData(id: Int) = viewModelScope.launch {
+    private suspend fun getMoviePostersData(id: Int) = coroutineScope {
+        launch ( Dispatchers.IO ){
             movieService.getMoviePosters(id, ApiCredentials.api_key, ApiCredentials.language,
                 ApiCredentials.include_image_language).enqueue(object : Callback<MoviePostersResponse>{
                 override fun onResponse(call: Call<MoviePostersResponse>, response: Response<MoviePostersResponse>) {
 //                    Log.d("response", "$response")
                     Log.d("response", "${response.body()?.posters}")
                     _moviePostersLiveData.postValue(response.body()?.posters)
+                    _appState.postValue(DataState.Success)
                 }
 
                 override fun onFailure(call: Call<MoviePostersResponse>, t: Throwable) {
@@ -109,15 +113,16 @@ class MovieViewModel: ViewModel() {
                 }
 
             })
-
+        }
     }
 
-//    fun onMovieSelected(position: Int){
-//        GlobalScope.launch {
-//            getMovieDetailsData(movieList[position].id)
-//            getMoviePostersData(movieList[position].id)
-//        }
-//        _navigationToDetailLiveData.postValue(Unit)
-//    }
+    fun onMovieSelected(position: Int){
+        _appState.postValue(DataState.Loading)
+        GlobalScope.launch {
+            getMovieDetailsData(movieList[position].id)
+            getMoviePostersData(movieList[position].id)
+        }
+        _navigationToDetailLiveData.postValue(Unit)
+    }
 
 }
