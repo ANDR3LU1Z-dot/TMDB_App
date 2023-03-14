@@ -11,4 +11,6 @@ data class MovieDetailsResponse (
     val vote_average: Double?
 ){
     fun getImageUrl() = ApiCredentials.imageUrl + poster_path
+
+    val getformattedVotes = String.format("%.1f", vote_average)
 }

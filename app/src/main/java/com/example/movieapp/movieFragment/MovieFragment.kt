@@ -50,10 +50,10 @@ class MovieFragment : Fragment(), MovieItemListener {
            }
         })
 
-        viewModel.navigationToDetailLiveData.observe(viewLifecycleOwner, Observer {
-            val action = MovieFragmentDirections.actionMovieFragmentToMovieDetailsFragment()
-            findNavController().navigate(action)
-        })
+//        viewModel.navigationToDetailLiveData.observe(viewLifecycleOwner, Observer {
+//            val action = MovieFragmentDirections.actionMovieFragmentToMovieDetailsFragment()
+//            findNavController().navigate(action)
+//        })
     }
 
     override fun onItemSelected(position: Int) {

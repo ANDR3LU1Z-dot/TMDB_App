@@ -19,6 +19,7 @@
         <include
             android:id="@+id/loading_item"
             layout="@layout/loading_item"
+            tools:visibility="gone"
             android:visibility="@{movieViewModel.appState == DataState.Loading ? View.VISIBLE : View.GONE}"
             />
 
@@ -90,7 +91,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:padding="10dp"
-                    android:text="@{movieViewModel.movieDetailsLiveData.vote_average.toString()}"
+                    android:text="@{movieViewModel.movieDetailsLiveData.getformattedVotes}"
                     android:textSize="24sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
