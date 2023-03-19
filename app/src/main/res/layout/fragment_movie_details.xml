@@ -55,7 +55,7 @@
                     android:layout_marginTop="8dp"
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
-                    android:text="@{movieViewModel.movieDetailsLiveData.title}"
+                    android:text='@{movieViewModel.movieDetailsLiveData.title ?? ""}'
                     android:textSize="24sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -68,7 +68,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:padding="10dp"
-                    android:text="@{movieViewModel.movieDetailsLiveData.overview}"
+                    android:text='@{movieViewModel.movieDetailsLiveData.overview ?? ""}'
                     android:textSize="20sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -91,7 +91,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:padding="10dp"
-                    android:text="@{movieViewModel.movieDetailsLiveData.getformattedVotes}"
+                    android:text='@{movieViewModel.movieDetailsLiveData.getformattedVotes ?? ""}'
                     android:textSize="24sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
