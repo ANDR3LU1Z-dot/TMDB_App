@@ -105,7 +105,9 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/movieScore" />
+                    app:layout_constraintTop_toBottomOf="@id/movieScore"
+                    android:visibility="@{movieViewModel.moviePostersLiveData.carouselImages.empty ? View.GONE : View.VISIBLE}"
+                    app:imageList="@{movieViewModel.moviePostersLiveData.carouselImages}"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

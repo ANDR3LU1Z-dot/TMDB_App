@@ -10,7 +10,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.movieapp.*
+import com.example.movieapp.MovieViewModel
+import com.example.movieapp.R
 import com.example.movieapp.databinding.FragmentMovieListBinding
 
 class MovieFragment : Fragment(), MovieItemListener {
@@ -50,16 +51,18 @@ class MovieFragment : Fragment(), MovieItemListener {
            }
         })
 
-//        viewModel.navigationToDetailLiveData.observe(viewLifecycleOwner, Observer {
-//            val action = MovieFragmentDirections.actionMovieFragmentToMovieDetailsFragment()
-//            findNavController().navigate(action)
-//        })
+        viewModel.navigationToDetailLiveData.observe(viewLifecycleOwner, Observer {
+            it.getContentIfNotHandled()?.let {
+                val action = MovieFragmentDirections.actionMovieFragmentToMovieDetailsFragment()
+                findNavController().navigate(action)
+            }
+        })
     }
 
     override fun onItemSelected(position: Int) {
         viewModel.onMovieSelected(position)
-        val action = MovieFragmentDirections.actionMovieFragmentToMovieDetailsFragment()
-        findNavController().navigate(action)
+//        val action = MovieFragmentDirections.actionMovieFragmentToMovieDetailsFragment()
+//        findNavController().navigate(action)
     }
 
 }

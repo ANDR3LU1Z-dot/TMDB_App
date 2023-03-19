@@ -4,22 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.navigation.navGraphViewModels
-import com.example.movieapp.ApiCredentials
 import com.example.movieapp.MovieViewModel
 import com.example.movieapp.R
 import com.example.movieapp.databinding.FragmentMovieDetailsBinding
-import org.imaginativeworld.whynotimagecarousel.ImageCarousel
-import org.imaginativeworld.whynotimagecarousel.model.CarouselItem
 
 class MovieDetailsFragment : Fragment() {
     private val viewModel by navGraphViewModels<MovieViewModel>(R.id.movie_graph) { defaultViewModelProviderFactory }
     private lateinit var binding: FragmentMovieDetailsBinding
-    val list: MutableList<CarouselItem> = mutableListOf()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,46 +29,8 @@ class MovieDetailsFragment : Fragment() {
 
         binding.lifecycleOwner = this.viewLifecycleOwner
         binding.movieViewModel = viewModel
-        val carouselList: ImageCarousel = binding.carousel
 
-        setCarouselView(carouselList)
         return binding.root
-    }
-
-    private fun setCarouselView(carousel: ImageCarousel) {
-        viewModel.moviePostersLiveData.observe(viewLifecycleOwner, Observer {
-            carousel.registerLifecycle(viewLifecycleOwner)
-            if (it.isNullOrEmpty() || it.size < 3) {
-                binding.carousel.visibility = View.GONE
-                Toast.makeText(
-                    requireActivity(),
-                    "Não foi possível carregar os posters do filme.",
-                    Toast.LENGTH_SHORT
-                ).show()
-            } else {
-                binding.carousel.visibility = View.VISIBLE
-                list.clear()
-                list.add(
-                    CarouselItem(
-                        ApiCredentials.imageUrl + it[0].file_path
-                    )
-                )
-
-                list.add(
-                    CarouselItem(
-                        ApiCredentials.imageUrl + it[1].file_path
-                    )
-                )
-
-                list.add(
-                    CarouselItem(
-                        ApiCredentials.imageUrl + it[2].file_path
-                    )
-                )
-                carousel.setData(list)
-            }
-        })
-
     }
 
 }

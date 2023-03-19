@@ -5,8 +5,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.movieapp.data.*
-import kotlinx.coroutines.*
+import com.example.movieapp.data.DataState
+import com.example.movieapp.data.Event
+import com.example.movieapp.data.MovieDetailsResponse
+import com.example.movieapp.data.Results
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
@@ -24,14 +28,14 @@ class MovieViewModel: ViewModel() {
     private val _movieDetailsLiveData = MutableLiveData<MovieDetailsResponse>()
 
     //MoviePosters LiveData
-    val moviePostersLiveData: LiveData<List<Posters>?>
+    val moviePostersLiveData: LiveData<MoviePostersResponse>
         get() = _moviePostersLiveData
-    val _moviePostersLiveData = MutableLiveData<List<Posters>?>()
+    private val _moviePostersLiveData = MutableLiveData<MoviePostersResponse>()
 
     //Navigation LiveData
     val navigationToDetailLiveData
         get() = _navigationToDetailLiveData
-    private val _navigationToDetailLiveData = MutableLiveData<Unit>()
+    private val _navigationToDetailLiveData = MutableLiveData<Event<Unit>>()
 
     val appState: LiveData<DataState>
         get() = _appState
@@ -81,8 +85,8 @@ class MovieViewModel: ViewModel() {
                 id, ApiCredentials.api_key, ApiCredentials.language,
                 ApiCredentials.include_image_language
             )
-            Log.d("response", "${response.body()?.posters}")
-            _moviePostersLiveData.postValue(response.body()?.posters)
+            Log.d("response", "${response.body()}")
+            _moviePostersLiveData.postValue(response.body())
             _appState.postValue(DataState.Success)
 
         }
@@ -95,7 +99,7 @@ class MovieViewModel: ViewModel() {
             getMovieDetailsData(it)
             getMoviePostersData(it)
         }
-        _navigationToDetailLiveData.postValue(Unit)
+        _navigationToDetailLiveData.postValue(Event(Unit))
     }
 
 }
