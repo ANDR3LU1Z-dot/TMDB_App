@@ -1,6 +1,6 @@
 package com.example.movieapp.data
 
-import com.example.movieapp.ApiCredentials.Companion.imageUrl
+import com.example.movieapp.helper.ApiCredentials.Companion.imageUrl
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)

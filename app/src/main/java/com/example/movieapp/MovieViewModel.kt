@@ -5,10 +5,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.movieapp.api.MovieService
 import com.example.movieapp.data.DataState
 import com.example.movieapp.data.Event
 import com.example.movieapp.data.MovieDetailsResponse
 import com.example.movieapp.data.Results
+import com.example.movieapp.helper.ApiCredentials
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import retrofit2.Retrofit

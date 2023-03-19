@@ -1,5 +1,6 @@
-package com.example.movieapp
+package com.example.movieapp.api
 
+import com.example.movieapp.MoviePostersResponse
 import com.example.movieapp.data.MovieDetailsResponse
 import com.example.movieapp.data.MovieListResponse
 import retrofit2.Response
