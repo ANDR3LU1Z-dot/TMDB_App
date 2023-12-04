@@ -1,23 +1,32 @@
 package com.example.movieapp
 
+import android.app.Application
 import android.util.Log
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.movieapp.api.MovieService
 import com.example.movieapp.data.DataState
 import com.example.movieapp.data.Event
 import com.example.movieapp.data.MovieDetailsResponse
 import com.example.movieapp.data.Results
+import com.example.movieapp.database.MoviesDatabase
 import com.example.movieapp.helper.ApiCredentials
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
-class MovieViewModel: ViewModel() {
-    private lateinit var movieList: List<Results>
+class MovieViewModel(application: Application) : AndroidViewModel(application) {
+
+    companion object {
+        const val TAG = "MovieViewModel"
+        const val PAGE_LIST_NUMBER = 1
+    }
+
+    private var movieList: List<Results>? = listOf()
+    private val moviesDatabase = MoviesDatabase.getDatabase(application)
+    private val movieListDao = moviesDatabase.resultDao(moviesDatabase)
 
     //MovieList LiveData
     val movieListLiveData: LiveData<List<Results>?>
@@ -52,22 +61,33 @@ class MovieViewModel: ViewModel() {
 
     init {
         _appState.postValue(DataState.Loading)
-        GlobalScope.launch { getMoviesListData() }
+        getMoviesListData()
     }
 
     private fun getMoviesListData() {
 
         viewModelScope.launch {
-            val response =
-                movieService.getMovieList(ApiCredentials.api_key, ApiCredentials.language, 1, ApiCredentials.region)
-            if (response.isSuccessful) {
-                Log.d("movieList", "${response.body()?.results}")
-                movieList = response.body()?.results!!
-                _movieListLiveData.postValue(response.body()?.results)
-                _appState.postValue(DataState.Success)
-            } else {
-                _appState.postValue(DataState.Error)
+            try {
+                val response = movieService.getMovieList(
+                    ApiCredentials.api_key, ApiCredentials.language, PAGE_LIST_NUMBER, ApiCredentials.region
+                )
+                if (response.isSuccessful) {
+                    Log.d(TAG, "${response.body()?.results}")
+                    movieList = response.body()?.results
+                    movieList?.let {
+                        persistMovieListData(it)
+                    }
+                    _movieListLiveData.postValue(response.body()?.results)
+                    _appState.postValue(DataState.Success)
+                } else {
+                    Log.d(TAG, "Não sucesso :( ${response.body()?.results}")
+                    errorMovieListHandling()
+                }
+            } catch (e: Exception) {
+                Log.d(TAG, "exceção: $e")
+                errorMovieListHandling()
             }
+
         }
     }
 
@@ -80,9 +100,9 @@ class MovieViewModel: ViewModel() {
         }
     }
 
-    private fun getMoviePostersData(id: Int){
+    private fun getMoviePostersData(id: Int) {
 
-        viewModelScope.launch{
+        viewModelScope.launch {
             val response = movieService.getMoviePosters(
                 id, ApiCredentials.api_key, ApiCredentials.language,
                 ApiCredentials.include_image_language
@@ -94,14 +114,30 @@ class MovieViewModel: ViewModel() {
         }
     }
 
-    fun onMovieSelected(position: Int){
+    fun onMovieSelected(position: Int) {
         _appState.postValue(DataState.Loading)
-        val movieDetails = movieList[position].id
-        movieDetails.let {
+        val movieID = movieList?.get(position)?.id
+        movieID?.let {
             getMovieDetailsData(it)
             getMoviePostersData(it)
         }
         _navigationToDetailLiveData.postValue(Event(Unit))
+    }
+
+    private suspend fun persistMovieListData(movieList: List<Results>) {
+        movieListDao.clearMovieListData()
+        movieListDao.insertMovieList(movieList)
+    }
+
+    private suspend fun errorMovieListHandling(){
+        val movieList = movieListDao.getAllMovies()
+
+        if(movieList.isNullOrEmpty()){
+            _appState.postValue(DataState.Error)
+        } else {
+            _movieListLiveData.postValue(movieList)
+            _appState.postValue(DataState.Success)
+        }
     }
 
 }
