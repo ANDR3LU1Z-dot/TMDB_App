@@ -4,18 +4,20 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.example.movieapp.dao.MovieDetailsDao
 import com.example.movieapp.dao.ResultDao
+import com.example.movieapp.data.MovieDetailsResponse
 import com.example.movieapp.data.Results
 
 @Database(
-    entities = [Results::class],
+    entities = [Results::class, MovieDetailsResponse::class],
     version = 1,
     exportSchema = false
 )
 abstract class MoviesDatabase: RoomDatabase() {
 
     abstract fun resultDao(moviesDatabase: MoviesDatabase): ResultDao
-//    abstract fun movieDetailsDao(): MovieDetailsDao
+    abstract fun movieDetailsDao(): MovieDetailsDao
 //    abstract fun moviePostersDao(): MoviePostersDao
 //    abstract fun posterDao(): PosterDao
 
