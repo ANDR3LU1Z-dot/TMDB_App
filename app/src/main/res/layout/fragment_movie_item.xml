@@ -12,13 +12,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#A8A8A5"
+        android:background="#032541"
         android:orientation="horizontal">
 
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:cardCornerRadius="12dp"
             android:minHeight="350dp"
             android:layout_margin="20dp">
 

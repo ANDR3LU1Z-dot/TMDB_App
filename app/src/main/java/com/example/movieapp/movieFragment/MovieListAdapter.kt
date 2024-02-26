@@ -1,5 +1,6 @@
 package com.example.movieapp.movieFragment
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,10 +14,15 @@ interface MovieItemListener {
 
 class MovieListAdapter(private val listener: MovieItemListener) : RecyclerView.Adapter<MovieListAdapter.ViewHolder>() {
 
+    companion object {
+        const val TAG = "MovieListAdapter"
+    }
+
     private var values: List<Results> = ArrayList()
 
     fun updateData(movieList: List<Results>) {
         values = movieList
+        Log.d(TAG, "values movie list adapter: $values")
         notifyDataSetChanged()
     }
 
