@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.movieapp.MoviePostersResponse
+import com.example.movieapp.data.MoviePostersResponse
 import com.example.movieapp.dao.MovieDetailsDao
 import com.example.movieapp.dao.MoviePostersDao
 import com.example.movieapp.dao.PostersDao

@@ -9,9 +9,9 @@ import androidx.lifecycle.viewModelScope
 import com.example.movieapp.api.MovieService
 import com.example.movieapp.data.DataState
 import com.example.movieapp.data.DataStateMovieDetails
-import com.example.movieapp.data.DataStateMoviePosters
 import com.example.movieapp.data.Event
 import com.example.movieapp.data.MovieDetailsResponse
+import com.example.movieapp.data.MoviePostersResponse
 import com.example.movieapp.data.MoviePostersWithAllProperties
 import com.example.movieapp.data.Results
 import com.example.movieapp.database.MoviesDatabase
@@ -60,11 +60,6 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
     val movieDetailsState: LiveData<DataStateMovieDetails>
         get() = _movieDetailsState
     private val _movieDetailsState = MutableLiveData<DataStateMovieDetails>()
-
-    val moviePostersState: LiveData<DataStateMoviePosters>
-        get() = _moviePostersState
-    private val _moviePostersState = MutableLiveData<DataStateMoviePosters>()
-
 
     private val retrofit = Retrofit.Builder()
         .baseUrl(ApiCredentials.baseUrl)

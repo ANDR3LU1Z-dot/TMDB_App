@@ -4,7 +4,6 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import com.example.movieapp.MoviePostersResponse
 import com.example.movieapp.helper.ApiCredentials.Companion.imageUrl
 import com.squareup.moshi.JsonClass
 

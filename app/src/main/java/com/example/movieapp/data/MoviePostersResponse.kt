@@ -1,13 +1,10 @@
-package com.example.movieapp
+package com.example.movieapp.data
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
-import com.example.movieapp.data.Backdrops
-import com.example.movieapp.data.Posters
-import com.example.movieapp.data.Results
 import com.squareup.moshi.JsonClass
 import org.imaginativeworld.whynotimagecarousel.model.CarouselItem
 

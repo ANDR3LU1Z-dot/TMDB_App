@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
-import com.example.movieapp.MoviePostersResponse
+import com.example.movieapp.data.MoviePostersResponse
 import com.example.movieapp.data.MoviePostersWithAllProperties
 import com.example.movieapp.database.MoviesDatabase
 
