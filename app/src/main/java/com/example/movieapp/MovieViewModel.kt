@@ -9,8 +9,10 @@ import androidx.lifecycle.viewModelScope
 import com.example.movieapp.api.MovieService
 import com.example.movieapp.data.DataState
 import com.example.movieapp.data.DataStateMovieDetails
+import com.example.movieapp.data.DataStateMoviePosters
 import com.example.movieapp.data.Event
 import com.example.movieapp.data.MovieDetailsResponse
+import com.example.movieapp.data.MoviePostersWithAllProperties
 import com.example.movieapp.data.Results
 import com.example.movieapp.database.MoviesDatabase
 import com.example.movieapp.helper.ApiCredentials
@@ -29,6 +31,7 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
     private val moviesDatabase = MoviesDatabase.getDatabase(application)
     private val movieListDao = moviesDatabase.resultDao(moviesDatabase)
     private val movieDetailsDao = moviesDatabase.movieDetailsDao()
+    private val moviePostersDao = moviesDatabase.moviePostersDao(moviesDatabase)
 
     //MovieList LiveData
     val movieListLiveData: LiveData<List<Results>?>
@@ -41,9 +44,9 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
     private val _movieDetailsLiveData = MutableLiveData<MovieDetailsResponse>()
 
     //MoviePosters LiveData
-    val moviePostersLiveData: LiveData<MoviePostersResponse>
+    val moviePostersLiveData: LiveData<MoviePostersResponse?>
         get() = _moviePostersLiveData
-    private val _moviePostersLiveData = MutableLiveData<MoviePostersResponse>()
+    private val _moviePostersLiveData = MutableLiveData<MoviePostersResponse?>()
 
     //Navigation LiveData
     val navigationToDetailLiveData
@@ -57,6 +60,10 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
     val movieDetailsState: LiveData<DataStateMovieDetails>
         get() = _movieDetailsState
     private val _movieDetailsState = MutableLiveData<DataStateMovieDetails>()
+
+    val moviePostersState: LiveData<DataStateMoviePosters>
+        get() = _moviePostersState
+    private val _moviePostersState = MutableLiveData<DataStateMoviePosters>()
 
 
     private val retrofit = Retrofit.Builder()
@@ -127,13 +134,31 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
     private fun getMoviePostersData(id: Int) {
 
         viewModelScope.launch {
-            val response = movieService.getMoviePosters(
-                id, ApiCredentials.api_key, ApiCredentials.language,
-                ApiCredentials.include_image_language
-            )
-            Log.d("response", "${response.body()}")
-            _moviePostersLiveData.postValue(response.body())
-            _appState.postValue(DataState.Success)
+            try {
+                val response = movieService.getMoviePosters(
+                    id, ApiCredentials.api_key, ApiCredentials.language,
+                    ApiCredentials.include_image_language
+                )
+
+                if(response.isSuccessful){
+                    Log.d("response", "${response.body()}")
+                    response.body()?.let {
+                        persistMoviePostersData(it, id)
+                    }
+                    _moviePostersLiveData.postValue(response.body())
+//                    _moviePostersState.postValue(DataStateMoviePosters.Success)
+
+                }
+                else{
+                    Log.d(TAG, "Falha na requisição: ${response.body()}")
+                    errorMoviePostersHandling(id)
+                }
+
+            } catch (e: Exception){
+                Log.d(TAG, "exceção details: $e")
+                errorMoviePostersHandling(id)
+            }
+
 
         }
     }
@@ -144,7 +169,7 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
         Log.d(TAG, "movie id: $movieID")
         movieID?.let {
             getMovieDetailsData(it)
-//            getMoviePostersData(it)
+            getMoviePostersData(it)
         }
         _navigationToDetailLiveData.postValue(Event(Unit))
     }
@@ -156,7 +181,6 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     private suspend fun persistMovieDetailsData(movieDetails: MovieDetailsResponse, movieId: Int){
-//        movieDetailsDao.clearMovieDetailsData()
         val movieDetailsPersisted = MovieDetailsResponse()
         movieDetailsPersisted.overview = movieDetails.overview
         movieDetailsPersisted.poster_path = movieDetails.poster_path
@@ -164,6 +188,12 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
         movieDetailsPersisted.vote_average = movieDetails.vote_average
         movieDetailsPersisted.movieListId = movieId
         movieDetailsDao.insertMovieDetails(movieDetailsPersisted)
+    }
+
+    private suspend fun persistMoviePostersData(moviePostersResponse: MoviePostersResponse, movieId: Int) {
+        moviePostersResponse.movieListId = movieId
+        Log.d(TAG, "Movie Poster Object $moviePostersResponse")
+        moviePostersDao.insertMoviePosters(moviePostersResponse)
     }
 
     private suspend fun errorMovieListHandling(){
@@ -184,11 +214,34 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
         Log.d(TAG, "id details: $movieDetails")
 
         if(movieDetails == null){
-            _movieDetailsState.postValue(DataStateMovieDetails.Error) //Criar um DataState so para o MovieDetails
+            _movieDetailsState.postValue(DataStateMovieDetails.Error)
         } else {
             _movieDetailsLiveData.postValue(movieDetails)
             _movieDetailsState.postValue(DataStateMovieDetails.Success)
         }
+    }
+
+    private suspend fun errorMoviePostersHandling(id: Int){
+        val moviePosters = loadPersistedMoviePostersData(id)
+        Log.d(TAG, "id movie posters: $moviePosters")
+
+        if (moviePosters == null){
+//            _moviePostersState.postValue(DataStateMoviePosters.Error)
+            Log.d(TAG, "Movie posters object is null")
+        } else {
+            _moviePostersLiveData.postValue(moviePosters)
+//            _moviePostersState.postValue(DataStateMoviePosters.Success)
+        }
+    }
+
+    private suspend fun loadPersistedMoviePostersData(movieId: Int): MoviePostersResponse?{
+        val moviePostersWithAllProperties = moviePostersDao.getMoviePosters(movieId)
+        return moviePostersWithAllProperties?.let { mapMoviePostersWithAllPropertiesToMoviePosters(it) }
+    }
+
+    private fun mapMoviePostersWithAllPropertiesToMoviePosters(moviePostersWithAllProperties: MoviePostersWithAllProperties): MoviePostersResponse {
+        moviePostersWithAllProperties.moviePostersResponse.posters = moviePostersWithAllProperties.posters
+        return moviePostersWithAllProperties.moviePostersResponse
     }
 
 }
