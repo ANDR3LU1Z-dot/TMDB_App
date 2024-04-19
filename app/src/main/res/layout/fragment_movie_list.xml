@@ -25,20 +25,33 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/list"
-            android:name="com.example.movieapp.MovieFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#A8A5A5"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:visibility="@{viewModel.appState == DataState.Success ? View.VISIBLE : View.GONE}"
-            app:layoutManager="LinearLayoutManager"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:context=".movieFragment.MovieFragment"
-            tools:listitem="@layout/fragment_movie_item" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/list"
+                android:name="com.example.movieapp.MovieFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#A8A5A5"
+                android:visibility="@{viewModel.appState == DataState.Success ? View.VISIBLE : View.GONE}"
+                app:layoutManager="LinearLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:context=".movieFragment.MovieFragment"
+                tools:listitem="@layout/fragment_movie_item" />
+
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"

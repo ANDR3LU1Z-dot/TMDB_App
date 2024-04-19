@@ -11,7 +11,7 @@
     <string name="text_btn_error_message_dialog">OK</string>
     <string name="title_unexpected_message_dialog">Opa…Isso não deveria ter acontecido</string>
     <string name="text_unexpected_message_dialog">Estamos com problemas técnicos, tente novamente mais tarde.</string>
-    <string name="error_msg">Ops, aconteceu um erro. Tente novamente mais tarde</string>
+    <string name="error_msg">Ops, ocorreu um erro. Verifique se você está conectado a internet ou tente novamente mais tarde</string>
     <string name="avaliacao_tmdb_label">Avaliação da TMDB:</string>
     <string name="text_release_date_label">Data de Lançamento:</string>
     <string name="loading_item_text">Carregando...</string>
