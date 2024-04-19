@@ -69,11 +69,12 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
     private val movieService = retrofit.create(MovieService::class.java)
 
     init {
-        _appState.postValue(DataState.Loading)
         getMoviesListData()
     }
 
-    private fun getMoviesListData() {
+    fun getMoviesListData() {
+
+        _appState.postValue(DataState.Loading)
 
         viewModelScope.launch {
             try {

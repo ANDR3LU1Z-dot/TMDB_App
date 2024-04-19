@@ -1,6 +1,8 @@
 package com.example.movieapp.movieFragment
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,14 +12,17 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.movieapp.MovieViewModel
 import com.example.movieapp.R
 import com.example.movieapp.databinding.FragmentMovieListBinding
 
-class MovieFragment : Fragment(), MovieItemListener {
+class MovieFragment : Fragment(), MovieItemListener, SwipeRefreshLayout.OnRefreshListener {
 
     private lateinit var adapter: MovieListAdapter
     private lateinit var recyclerView: RecyclerView
+    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
+
     private val viewModel by navGraphViewModels<MovieViewModel>(R.id.movie_graph){
         defaultViewModelProviderFactory
     }
@@ -29,6 +34,10 @@ class MovieFragment : Fragment(), MovieItemListener {
         val binding = FragmentMovieListBinding.inflate(inflater)
         val view = binding.root
         recyclerView = binding.list
+
+        swipeRefreshLayout = binding.swipeLayout
+
+        swipeRefreshLayout.setOnRefreshListener(this)
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = this.viewLifecycleOwner
@@ -63,6 +72,14 @@ class MovieFragment : Fragment(), MovieItemListener {
         viewModel.onMovieSelected(position)
 //        val action = MovieFragmentDirections.actionMovieFragmentToMovieDetailsFragment()
 //        findNavController().navigate(action)
+    }
+
+    override fun onRefresh() {
+        Handler(Looper.getMainLooper()).postDelayed({
+            viewModel.getMoviesListData()
+            swipeRefreshLayout.isRefreshing = false
+        }, 1000)
+
     }
 
 }
