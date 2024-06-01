@@ -1,4 +1,4 @@
-package com.example.movieapp
+package com.example.movieapp.viewBinder
 
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
