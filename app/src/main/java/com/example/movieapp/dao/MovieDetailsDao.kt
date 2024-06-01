@@ -10,7 +10,7 @@ interface MovieDetailsDao: BaseDao<MovieDetailsResponse> {
 
     @Transaction
     @Query("SELECT * FROM movie_details WHERE movieListId= :movieListId")
-    suspend fun getMovieDetails(movieListId: Int): MovieDetailsResponse
+    suspend fun getMovieDetails(movieListId: Int): MovieDetailsResponse?
 
     @Transaction
     suspend fun insertMovieDetails(movieDetails: MovieDetailsResponse){

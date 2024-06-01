@@ -8,7 +8,7 @@
         <import type="android.view.View"/>
         <variable
             name="viewModel"
-            type="com.example.movieapp.MovieViewModel" />
+            type="com.example.movieapp.viewModel.MovieViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
